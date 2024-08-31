@@ -21,3 +21,13 @@ export const deleteTodo = async (id: Todo["id"]): Promise<void> => {
     console.error((error as Error).message);
   }
 };
+
+export const addTodo = async (newTodo: {
+  title: Todo["title"];
+}): Promise<void> => {
+  try {
+    await api.post("/todos", newTodo);
+  } catch (error) {
+    console.error((error as Error).message);
+  }
+};

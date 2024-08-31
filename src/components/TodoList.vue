@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { fetchTodos, deleteTodo } from "../services/api";
+import { addTodo, fetchTodos, deleteTodo } from "../services/api";
 import { Todo } from "../types/Todo";
 
 const todos = ref<Todo[]>([]);
+const inputValue = ref("");
 
 const getTodos = async () => {
   try {
@@ -16,17 +17,44 @@ const getTodos = async () => {
   }
 };
 
+onMounted(() => {
+  getTodos();
+});
+
 const handleDeleteTodo = async (id: Todo["id"]) => {
   await deleteTodo(id);
   await getTodos();
 };
 
-onMounted(() => {
-  getTodos();
-});
+const handleSubmit = async () => {
+  if (inputValue.value.length === 0) return;
+  const newTodo = { title: inputValue.value };
+  await addTodo(newTodo);
+  inputValue.value = "";
+  await getTodos();
+};
 </script>
 
 <template>
+  <v-form @submit="handleSubmit" @submit.prevent class="mt-8">
+    <v-row class="w-100">
+      <v-col>
+        <v-text-field
+          v-model="inputValue"
+          placeholder="Type here"
+          type="input"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="auto">
+        <v-btn
+          class="mt-2"
+          text="Add todo"
+          type="submit"
+          color="success"
+        ></v-btn>
+      </v-col>
+    </v-row>
+  </v-form>
   <v-card class="mt-8">
     <div
       v-for="todo in todos"
