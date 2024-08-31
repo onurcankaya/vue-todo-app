@@ -1,16 +1,24 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { fetchTodos } from "../services/api";
+import { fetchTodos, deleteTodo } from "../services/api";
+import { Todo } from "../types/Todo";
 
-const todos = ref([]);
+const todos = ref<Todo[]>([]);
 
 const getTodos = async () => {
   try {
     const allTodos = await fetchTodos();
-    todos.value = allTodos;
+    if (allTodos) {
+      todos.value = allTodos;
+    }
   } catch (error) {
-    console.error("Error fetching todos", error.message);
+    console.error("Error fetching todos", (error as Error).message);
   }
+};
+
+const handleDeleteTodo = async (id: Todo["id"]) => {
+  await deleteTodo(id);
+  await getTodos();
 };
 
 onMounted(() => {
@@ -32,7 +40,9 @@ onMounted(() => {
         ></v-checkbox-btn>
         {{ todo.title }}
       </div>
-      <v-btn variant="outlined">delete</v-btn>
+      <v-btn variant="outlined" @click="handleDeleteTodo(todo.id)"
+        >delete</v-btn
+      >
     </div>
   </v-card>
 </template>
