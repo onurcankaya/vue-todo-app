@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { addTodo, fetchTodos, deleteTodo } from "../services/api";
+import { addTodo, fetchTodos, deleteTodo, updateTodo } from "../services/api";
 import { Todo } from "../types/Todo";
 
 const todos = ref<Todo[]>([]);
@@ -10,7 +10,11 @@ const getTodos = async () => {
   try {
     const allTodos = await fetchTodos();
     if (allTodos) {
-      todos.value = allTodos;
+      const sortedTodos = allTodos.sort(
+        (a, b) =>
+          new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      );
+      todos.value = sortedTodos;
     }
   } catch (error) {
     console.error("Error fetching todos", (error as Error).message);
@@ -31,6 +35,12 @@ const handleSubmit = async () => {
   const newTodo = { title: inputValue.value };
   await addTodo(newTodo);
   inputValue.value = "";
+  await getTodos();
+};
+
+const toggleTodo = async (todo: Todo) => {
+  const newTodo = { ...todo, is_completed: !todo.is_completed };
+  await updateTodo(newTodo);
   await getTodos();
 };
 </script>
@@ -65,6 +75,7 @@ const handleSubmit = async () => {
         <v-checkbox-btn
           color="success"
           v-model="todo.is_completed"
+          @click="toggleTodo(todo)"
         ></v-checkbox-btn>
         {{ todo.title }}
       </div>

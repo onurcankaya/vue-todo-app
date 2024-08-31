@@ -31,3 +31,11 @@ export const addTodo = async (newTodo: {
     console.error((error as Error).message);
   }
 };
+
+export const updateTodo = async (newTodo: Todo): Promise<void> => {
+  try {
+    await api.put(`/todos/${newTodo.id}`, newTodo);
+  } catch (error) {
+    console.error((error as Error).message);
+  }
+};
