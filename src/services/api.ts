@@ -32,7 +32,7 @@ export const addTodo = async (newTodo: {
   }
 };
 
-export const updateTodo = async (newTodo: Todo): Promise<void> => {
+export const updateTodo = async (newTodo: Todo) => {
   try {
     await api.put(`/todos/${newTodo.id}`, newTodo);
   } catch (error) {
