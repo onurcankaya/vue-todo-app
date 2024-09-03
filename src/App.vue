@@ -1,10 +1,5 @@
-<script setup>
-import TodoList from "./components/TodoList.vue";
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <v-container max-width="600">
-    <h1 class="text-center">Todo App</h1>
-    <TodoList />
-  </v-container>
+  <RouterView />
 </template>
