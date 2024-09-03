@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { deleteTodo, updateTodo } from "../services/api";
+import { deleteTodo, updateTodo } from "../services/todoApi";
 import { Todo } from "../types/Todo";
 
 const props = defineProps<{

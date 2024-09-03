@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { addTodo, fetchTodos } from "../services/api";
+import { addTodo, fetchTodos } from "../services/todoApi";
 import { Todo } from "../types/Todo";
 import TodoListItem from "../components/TodoListItem.vue";
 
