@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import { User } from "../types/User.ts";
 import { registerUser } from "../services/userApi.ts";
 
@@ -11,8 +12,11 @@ const initialUser = {
 
 const user = ref<User>(initialUser);
 
+const router = useRouter();
+
 const handleSubmit = async () => {
   await registerUser(user.value);
+  router.push("/login");
 };
 </script>
 
